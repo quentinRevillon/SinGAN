@@ -41,12 +41,12 @@ Mean distance between the training image and 50 generated samples (lower is bett
   the texture statistics but lose global structure. With the same number of scales, training
   takes about 40% less time than the adversarial version, and 3–4 scales are enough instead of
   the 6–8 used by SinGAN (report, Section 5.6).
-- The Wasserstein metric alone is misleading: zebra samples get the lowest distance while being
-  visually the worst, which motivated LPIPS (report, Sections 3.4–3.5).
+- The Wasserstein metric alone is misleading: zebra samples get the lowest distance although they
+  are among the visually worst, which motivated LPIPS (report, Sections 3.4–3.5).
 
-On textures, SWD samples are visually more varied and avoid the overfitted borders produced by
-both adversarial versions (top to bottom: repeated pattern, Gaussian texture, non-Gaussian texture;
-columns as above, samples generated at twice the input size; report, Figure 15):
+On textures, SWD samples are visually more varied and avoid the overfitted or overly regular
+patterns of both adversarial versions (report, Section 6.4). Top to bottom: repeated pattern,
+Gaussian texture, non-Gaussian texture; columns as above, samples larger than the input (report, Figure 15):
 
 <img height="400" src="figures/textures.png" />
 
@@ -65,13 +65,13 @@ pip install -r requirements.txt
 Generate 8 samples from the pretrained zebra model (re-implementation):
 
 ```bash
-python sample.py --model models/zebre/basic --image images/zebre.png --num-samples 8 --out-dir outputs/zebre_basic
+python sample.py --model models/zebre/basic --image images/zebre.png --num-samples 8 --out-dir generated/zebre_basic
 ```
 
 Same with the SWD variant:
 
 ```bash
-python sample.py --model models/zebre/SWD --image images/zebre.png --num-samples 8 --out-dir outputs/zebre_swd
+python sample.py --model models/zebre/SWD --image images/zebre.png --num-samples 8 --out-dir generated/zebre_swd
 ```
 
 | Argument | Meaning |
@@ -103,15 +103,15 @@ and run the notebook; its last cell writes the model folder.
 - `notebooks/05_ot_sanity_check.ipynb`: SWD on pixel patches and Inception features, real vs random image.
 - `notebooks/06_single_generator_experiment.ipynb`: exploratory test of one generator shared across scales.
 - `models/<image>/{basic,SWD}/`: pretrained weights, noise levels and training hyper-parameters.
-- `images/`: training images. `samples/`: 50 samples per image used for the metrics. `outputs/`: other samples.
+- `images/`: training images. `samples/`: 50 generated samples per image (8 for `non_gaussian`). `outputs/`: other samples.
 - `docs/report.pdf`: project report (French).
 
 ## Method
 
 **SinGAN.** Scale n produces `x_n = up(x_{n+1}) + G_n(z_n + up(x_{n+1}))`, from noise only at the
-coarsest scale. Each `G_n` has 5 conv layers (3x3 conv, batch norm, LeakyReLU), with 32 channels at
-the coarsest scales, doubled every 4 scales; the critic has the same body and an 11x11 receptive
-field. Each scale minimises `L_WGAN-GP + alpha * ||x_n - G_n(z_rec)||^2`, and the noise amplitude
+coarsest scale. Each `G_n` has 4 blocks (3x3 conv, batch norm, LeakyReLU) and a final 3x3 conv with
+tanh, with 32 channels at the coarsest scales, doubled every 4 scales; the critic has the same body
+and an 11x11 receptive field. Each scale minimises `L_WGAN-GP + alpha * ||x_n - G_n(z_rec)||^2`, and the noise amplitude
 `sigma_n` is set from the reconstruction error of the coarser scale. Saved models use 8–9 scales,
 `r = 4/3`, 2000 iterations per scale, 5 critic steps per 2 generator steps, Adam (lr 5e-4,
 betas 0.5/0.999), alpha = 10, lambda_GP = 10.

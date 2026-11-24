@@ -1,7 +1,7 @@
 """Draw random samples from a pretrained SinGAN or SWD model.
 
 Usage (from the repository root):
-    python sample.py --model models/oiseau/basic --image images/oiseau.png --num-samples 8 --out-dir outputs/oiseau_basic
+    python sample.py --model models/oiseau/basic --image images/oiseau.png --num-samples 8 --out-dir generated/oiseau_basic
 
 Arguments:
     --model        model folder containing generators.pt, sigma_n.json and Description.txt

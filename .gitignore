@@ -19,3 +19,6 @@ wandb/
 Thumbs.db
 .vscode/
 .idea/
+
+# Samples written by sample.py
+generated/

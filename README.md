@@ -34,7 +34,7 @@ Use `models/zebre/SWD` for the SWD variant. To train on a new image, run `notebo
 - SWD variant: we replace the critic at each scale by a frozen Inception-v3. Features from three layers are matched to the training image with a differentiable SWD. The multi-scale scheme and the reconstruction loss are unchanged.
 - Evaluation: Wasserstein distance between Inception feature clouds, LPIPS (VGG) [2] and t-SNE, over 50 samples per image.
 
-Details are in the report (in French): [`docs/report.pdf`](docs/report.pdf).
+Details are in the report (in French): [`docs/report_fr.pdf`](docs/report_fr.pdf).
 
 ## Structure
 
@@ -49,8 +49,8 @@ docs/        report
 
 ## References
 
-1. T. R. Shaham, T. Dekel, T. Michaeli. *SinGAN: Learning a Generative Model from a Single Natural Image*. ICCV 2019. [arXiv:1905.01164](https://arxiv.org/abs/1905.01164)
-2. R. Zhang et al. *The Unreasonable Effectiveness of Deep Features as a Perceptual Metric*. CVPR 2018. [arXiv:1801.03924](https://arxiv.org/abs/1801.03924)
+1. T. R. Shaham et al. [SinGAN: Learning a Generative Model from a Single Natural Image](https://arxiv.org/abs/1905.01164). ICCV, 2019.
+2. R. Zhang et al. [The Unreasonable Effectiveness of Deep Features as a Perceptual Metric](https://arxiv.org/abs/1801.03924). CVPR, 2018.
 
 ## Team
 
